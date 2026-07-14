@@ -9,7 +9,7 @@ const Navbar = () => {
 
          <div className ="flex items-center justify-between">{/*between means the space between the thinkboard text on the left and the right button */}
              <h1 className="text-3xl font-bold text-primary font-mono tracking-tight">
-                ThinkBoard
+                Julie's ThinkBoard
             </h1>
             <div className="flex items-center gap-4">
                 <Link to ={"/create"} className="btn btn-primary ">

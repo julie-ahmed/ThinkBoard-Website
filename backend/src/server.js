@@ -11,16 +11,26 @@ import dotenv from "dotenv"; //to load environment variables from a .env file in
 import { connectDB } from "./config/db.js"; //to connect to the database and use the connection in the server  python .terminal.useenv
 import rateLimiter from "./middlware/rateLimiter.js"; //import the rate limiter middleware
 import cors from "cors"; //import the cors middleware to allow cross origin requests
+import path from "path";
 
 
 dotenv.config();  //env file must be at the same as pckg.json file
 
 const app = express();
 const port = process.env.port || 5001;
+const __dirname =path.resolve()//?
 
 
 
-app.use(cors());//make sure its before sending any responds {origin:"http://localhost:5173",}
+//this only is used in development bec in dev we have 2 domains but in 
+// production we only have 1 domain so no need for it. 
+if(process.env.NODE_ENV !== "production"){
+app.use(cors(
+  { origin: "http://localhost:5173", }
+));//make sure its before sending any responds {origin:"http://localhost:5173",}
+}
+
+
 
 //middleware
 app.use(express.json());//this help me access title and content fro controllerfile without it i cannot access them
@@ -40,6 +50,18 @@ app.use(rateLimiter) //put it also before we send the respond and make sure its 
 
 //sends the response back
 app.use("/api/notes",notesroutes);
+//we only needs to do this if our application is on render.com
+
+//to render the frrontend too with the backend
+if(process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist"))); ///?
+  app.get("*", (req, res) => {
+
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));//?
+
+
+  });
+}
 
 connectDB().then(()=>{  // it connects to db first then starts the server 
 

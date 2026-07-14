@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import RateLimitedUI from "../components/RateLimitedUI";
 import NoteCard from "../components/NoteCard";
+import "@fontsource/pixelify-sans";
 
 import api from "../lib/axios";
 import toast from "react-hot-toast";
@@ -55,9 +56,23 @@ const HomePage = () => {
 
   return (            //bracet is imp it prevents the error of appearing a plan page
     <div className="min-h-screen">
-
       <Navbar /> 
-      
+{/*       
+      <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-0">
+        <h1
+          className="
+              font-['Pixelify_Sans']
+              text-[clamp(5rem,15vw,16rem)]
+              uppercase
+              tracking-[0.2em]
+              whitespace-nowrap
+              select-none
+              text-fuchsia-500/10
+            ">
+          jules
+        </h1>
+
+        <div className="absolute justify-center "> */}
       {/* called navbar component andcomponent must start with a capital */}
       
       {isRatelimited && <RateLimitedUI />} 
@@ -70,19 +85,23 @@ const HomePage = () => {
         {notes.length === 0 && !loading && !isRatelimited && <NotesNotFound />} 
 
         {notes.length > 0 && !(isRatelimited) && (
+
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {notes.map(note => (<NoteCard key={note._id} note={note} setNotes={setNotes} />))}
 
 
           </div>
 
+
         )}
 
 
-
+       </div>
       </div>
 
-    </div>
+    //   </div>
+    // </div>
   );
 };
 
